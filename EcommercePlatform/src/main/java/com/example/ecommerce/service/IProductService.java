@@ -16,6 +16,9 @@ public interface IProductService {
 	public void deleteProduct(long productId);
 	public Product findByProduct(Product product,long productId);
 	public List<Product> findAllProducts();
-
+	public List<Product>getProductsByCategory(String category);
+	public List<Product>getProductsByCategoryandPrice(String category, double price);
+	public Long countProductsbyCategory(String category);
 	public ProductDto convertProducttoDTO(Product product);
+	public List<ProductDto> getConvertedProducts(List<Product> product);
 }

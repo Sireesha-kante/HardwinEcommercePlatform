@@ -13,7 +13,8 @@ public interface IUserService {
 	public  User createUser(CreateUser createUser );
 	public User updateUser(UpdateUser updateUser, long userId);
 	public void deleteUser(long userId);
-	public User findByUser(User user,long userId);
+	public User findByUser(User user, long userId);
 	public List<User> findAll();
-     public UserDto convertUserToDTO(User user);
+    public UserDto convertUserToDTO(User user);
+    public List<UserDto> getconvertUser(List<User> user);
 }

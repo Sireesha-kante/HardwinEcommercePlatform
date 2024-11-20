@@ -56,7 +56,7 @@ public class UserService implements IUserService  {
 	}
 
 	@Override
-	public User findByUser(User user ,long userId) {
+	public User findByUser(User user, long userId) {
 
 		return userRepo.findById(userId)
 					   .orElseThrow(() -> new AlreadyExistException("User with email " +user.getUserEmail() + "notfound"));
@@ -78,6 +78,11 @@ public class UserService implements IUserService  {
         userDto.setUserEmail(user.getUserEmail());
         userDto.setPassword(user.getPassword());
         return userDto;
+	}
+	public List<UserDto> getconvertUser(List<User> user) {
+		
+		return user.stream().map(this::convertUserToDTO).toList();
+		
 	}
 
 	

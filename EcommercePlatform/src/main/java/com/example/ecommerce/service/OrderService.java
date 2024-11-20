@@ -50,4 +50,17 @@ public class OrderService implements IOrderService {
 		
 	}
 
+	@Override
+	public Orders placeOrder(long userId) {
+		return null;
+	}
+
+	@Override
+	public List<OrdersDto> getUserOrders(long userId) {
+		List<Orders>orders=orderRepo.findByUserId(userId);
+		  return orders.stream().map(this::convertOrdersToDTO).toList();
+	}
+	
+	
+
 }

@@ -1,5 +1,6 @@
 package com.example.ecommerce.service;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,30 @@ public class ProductService  implements IProductService{
 		
 		return productDto;
 		
+	}
+
+	@Override
+	public List<Product> getProductsByCategory(String category) {
+		return	productRepo.existsByCategory_CategoryName(category);
+			 	
+	}
+
+	@Override
+	public List<Product> getProductsByCategoryandPrice(String category, double price) {
+		
+		return productRepo.findByCategory_CategoryNameAndPriceLessThan(category,price);
+	}
+
+	@Override
+	public Long countProductsbyCategory(String category) {
+		
+		return productRepo.countByCategory_CategoryName(category);
+	}
+
+	@Override
+	public List<ProductDto> getConvertedProducts(List<Product> product) {
+		
+		return product.stream().map(this::convertProducttoDTO).toList();
 	}
 
 }

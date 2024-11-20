@@ -67,4 +67,9 @@ public class CategoryService implements ICategoryService {
 		
 	}
 
+	@Override
+	public List<CategoryDto> giveconvertedCategoryDTO(List<Category> category) {
+		return category.stream().map(this::convertCategorytoDTO).toList();
+	}
+
 }

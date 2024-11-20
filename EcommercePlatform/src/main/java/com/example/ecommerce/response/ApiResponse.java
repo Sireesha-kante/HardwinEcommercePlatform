@@ -6,35 +6,35 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@lombok.Data
 public class ApiResponse {
 
-	private String Message;
-	private String Data;
-	public ApiResponse(String message, String data) {
+	private String message;
+	private Object data;
+	public ApiResponse(String message, Object data) {
 		super();
-		Message = message;
-		Data = data;
+		this.message = message;
+		this.data = data;
 	}
 	public ApiResponse() {
 		super();
 	}
 	public String getMessage() {
-		return Message;
+		return message;
 	}
 	public void setMessage(String message) {
-		Message = message;
+		this.message = message;
 	}
-	public String getData() {
-		return Data;
+	public Object getData() {
+		return data;
 	}
-	public void setData(String data) {
-		Data = data;
+	public void setData(Object data) {
+		this.data = data;
 	}
 	@Override
 	public String toString() {
-		return "ApiResponse [Message=" + Message + ", Data=" + Data + "]";
+		return "ApiResponse [message=" + message + ", data=" + data + "]";
 	}
+	
 	
 	
    
