@@ -8,9 +8,9 @@ import com.example.ecommerce.entities.Category;
 public interface ICategoryService {
 
 	public Category  createCategory(Category category );
-	public Category updateCategory(Category category, long categoryId);
+	public Category updateCategory(Category category,long categoryId);
 	public void deleteCategory(long categoryId);
-	public Category findByCategoryId(Category category,long categoryId);
+	public Category findByCategoryId(long categoryId);
 	public List<Category> findAllCategories();
 	public CategoryDto convertCategorytoDTO(Category category);
 	public List<CategoryDto> giveconvertedCategoryDTO(List<Category>category);

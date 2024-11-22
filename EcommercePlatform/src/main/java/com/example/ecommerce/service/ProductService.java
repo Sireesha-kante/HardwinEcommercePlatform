@@ -1,17 +1,17 @@
 package com.example.ecommerce.service;
 
-import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ecommerce.dto.ProductDto;
-import com.example.ecommerce.dto.UserDto;
+import com.example.ecommerce.entities.Category;
 import com.example.ecommerce.entities.Product;
-import com.example.ecommerce.entities.User;
 import com.example.ecommerce.exception.AlreadyExistException;
 import com.example.ecommerce.exception.ResourceNotFound;
+import com.example.ecommerce.repository.CategoryRepository;
 import com.example.ecommerce.repository.ProductRepository;
 import com.example.ecommerce.request.AddProduct;
 import com.example.ecommerce.request.UpdateProduct;
@@ -23,23 +23,23 @@ public class ProductService  implements IProductService{
 
 	@Autowired
 	private ProductRepository productRepo;
+	@Autowired
+	private CategoryRepository categoryRepo;
 	
 	@Override
-	public Product createProduct(AddProduct addProduct) {
+	public Product createProduct(AddProduct addProduct, long categoryId) {
 		if(productRepo.existsByproductName(addProduct.getProductName()))
 		{
 			throw new AlreadyExistException("This Product** " + addProduct.getProductName() + "  **already exist");
 		}
 		
 		Product product = new Product();
+		Optional<Category> category= categoryRepo.findById(categoryId);
+		product.setCategory(category.get());
 		product.setProductName(addProduct.getProductName());
 		product.setDescription(addProduct.getDescription());
 		product.setPrice(addProduct.getPrice());
 		product.setStock(addProduct.getStock());
-		product.setCategory(addProduct.getCategory());
-		
-		
-	    
 	    return productRepo.save(product);
 	}
 
@@ -50,7 +50,6 @@ public class ProductService  implements IProductService{
 			product.setDescription(updateProduct.getDescription());
 			product.setPrice(updateProduct.getPrice());
 			product.setStock(updateProduct.getStock());
-			product.setCategory(updateProduct.getCategory());
 			return productRepo.save(product);
 			   
 		}).orElseThrow(()->new ResourceNotFound("Product not found"));
@@ -77,7 +76,7 @@ public class ProductService  implements IProductService{
 	}
 
 	@Override
-	public ProductDto convertProducttoDTO(Product product ) {
+	public ProductDto convertProducttoDTO(Product product) {
 		ProductDto productDto=new ProductDto();
 		productDto.setProductId(product.getProductId());
 		productDto.setProductName(product.getProductName());
@@ -92,14 +91,14 @@ public class ProductService  implements IProductService{
 
 	@Override
 	public List<Product> getProductsByCategory(String category) {
-		return	productRepo.existsByCategory_CategoryName(category);
+		return	productRepo.findByCategory_CategoryName(category);
 			 	
 	}
 
 	@Override
 	public List<Product> getProductsByCategoryandPrice(String category, double price) {
 		
-		return productRepo.findByCategory_CategoryNameAndPriceLessThan(category,price);
+		return productRepo.findByCategory_CategoryNameAndPrice(category,price);
 	}
 
 	@Override

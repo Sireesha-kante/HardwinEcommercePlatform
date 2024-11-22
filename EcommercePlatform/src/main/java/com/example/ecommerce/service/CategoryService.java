@@ -1,6 +1,7 @@
 package com.example.ecommerce.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,23 +32,28 @@ public class CategoryService implements ICategoryService {
 
 	@Override
 	public Category updateCategory(Category category, long categoryId) {
-		if(categoryRepo.existsById(category.getCategoryId()))
-		{
-			throw new ResourceNotFound("This Category**" +category.getCategoryName()+"Not found");
-		}
-		return categoryRepo.save(category);
+	
+return Optional.ofNullable(findByCategoryId(categoryId))
+		.map(oldcategory->{
+			oldcategory.setCategoryName(category.getCategoryName());
+			System.out.println(category.getCategoryName());
+			return categoryRepo.save(oldcategory);
+		}).orElseThrow(() -> new ResourceNotFound("Category with name " +category.getCategoryName()+ "notfound"));
+		
 	}
 
 	@Override
 	public void deleteCategory(long categoryId) {
+		
+	
 		categoryRepo.findById(categoryId).ifPresentOrElse(categoryRepo::delete,()->new ResourceNotFound("Category not found") );
 
 	}
 
 	@Override
-	public Category findByCategoryId(Category category, long categoryId) {
+	public Category findByCategoryId(long categoryId) {
 		return categoryRepo.findById(categoryId)
-				   .orElseThrow(() -> new ResourceNotFound("Category with name " +category.getCategoryName()+ "notfound"));
+				   .orElseThrow(() -> new ResourceNotFound("Category with name not found"));
 
 	}
 

@@ -22,13 +22,13 @@ import com.example.ecommerce.response.ApiResponse;
 import com.example.ecommerce.service.CategoryService;
 
 @RestController
-@RequestMapping("${api.prefix}/category")
+@RequestMapping("/api/ecom")
 public class CategoryController {
 	
 	@Autowired
 	private CategoryService categoryService;
 	
-	@PostMapping("/createCategory")
+	@PostMapping("/Category")
 	public ResponseEntity<ApiResponse>  insertCategory(@RequestBody Category category )
 	{
 	 try {
@@ -42,12 +42,14 @@ public class CategoryController {
 	 }
 	}
 	
-	@PutMapping("{categoryId}updatecategory")
-	public ResponseEntity<ApiResponse> updateCategory(Category category, @PathVariable long categoryId)
+	@PutMapping("updatecategory/{categoryId}")
+	public ResponseEntity<ApiResponse> updatedCategory(@RequestBody Category category,@PathVariable long categoryId)
 	{
 		 try {
-			 Category categories=categoryService.updateCategory(category, categoryId);
+			 Category categories=categoryService.updateCategory(category,categoryId);
+			 System.out.println(categories.getCategoryName());
 			 CategoryDto categoryDto=categoryService.convertCategorytoDTO(categories);
+			 System.out.println(categoryDto.getCategoryName());
 			 return ResponseEntity.ok(new ApiResponse("Sucess",categoryDto)); 
 		 }
 		 catch(ResourceNotFound rnf) {
@@ -55,7 +57,7 @@ public class CategoryController {
 			 
 		 }
 	}
-	@DeleteMapping("/{categoryId}deletecategory")
+	@DeleteMapping("/deletecategory/{categoryId}")
 	public ResponseEntity<ApiResponse> deleteCategory(@PathVariable long categoryId)
 	{
 		try {
@@ -67,11 +69,11 @@ public class CategoryController {
 		 }
 	}
 	
-	@GetMapping("/{categoryId}getcategory")
-	public ResponseEntity<ApiResponse> getCategoryBasedOnId(@RequestBody Category category, @PathVariable long categoryId)
+	@GetMapping("/getcategory/{categoryId}")
+	public ResponseEntity<ApiResponse> getCategoryBasedOnId(@PathVariable long categoryId)
 	{
 		try {
-			Category categories=categoryService.findByCategoryId(category, categoryId);
+			Category categories=categoryService.findByCategoryId(categoryId);
 			CategoryDto categoryDto=categoryService.convertCategorytoDTO(categories);
 			 return ResponseEntity.ok(new ApiResponse("sucess",categoryDto));
 		}

@@ -1,5 +1,11 @@
 package com.example.ecommerce.entities;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Product {
@@ -17,16 +24,17 @@ public class Product {
 	@Column(name="productName",nullable = false)
 	private String productName;
 	@Column(name="productDescription")
-	private String Description;
+	private String description;
 	@Column(name="productPrice")
 	private Double price;
 	@Column(name="productStock")
 	private int stock;
 	
+	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="categoryid")
+	@JoinColumn(name="categoryId")
 	private Category category;
-
+	
 	public Product() {
 		super();
 	}
@@ -35,7 +43,7 @@ public class Product {
 		super();
 		this.productId = productId;
 		this.productName = productName;
-		Description = description;
+		this.description = description;
 		this.price = price;
 		this.stock = stock;
 		this.category = category;
@@ -58,11 +66,11 @@ public class Product {
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	public Double getPrice() {
@@ -91,7 +99,7 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", productName=" + productName + ", Description=" + Description
+		return "Product [productId=" + productId + ", productName=" + productName + ", Description=" + description
 				+ ", price=" + price + ", stock=" + stock + ", category=" + category + "]";
 	}
 }

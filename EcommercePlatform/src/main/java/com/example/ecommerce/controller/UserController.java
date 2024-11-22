@@ -31,7 +31,7 @@ import com.example.ecommerce.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/users")
+@RequestMapping("/api/ecom")
 @RestController
 public class UserController {
 	@Autowired
@@ -52,7 +52,7 @@ public class UserController {
 	 
 	}
 
-	@PutMapping("/{userId}updateUser")
+	@PutMapping("/updateUser/{userId}")
 	public ResponseEntity<ApiResponse> updateUser(@RequestBody UpdateUser updateUser,@PathVariable long userId)
 	{
 		 try {
@@ -65,8 +65,8 @@ public class UserController {
 			 
 		 }
 	}
-	@DeleteMapping("/{userId}deleteUser")
-	private ResponseEntity<ApiResponse> deleteUser(@PathVariable long userId)
+	@DeleteMapping("/deleteUser/{userId}")
+	public ResponseEntity<ApiResponse> deleteUser(@PathVariable long userId)
 	{
 		try {
 			 userService.deleteUser(userId);
@@ -78,8 +78,8 @@ public class UserController {
 		 
 	}
 	
-	@GetMapping("/{userId}/getuser")
-	private ResponseEntity<ApiResponse> getUserById(@RequestBody User user, @PathVariable long userId)
+	@GetMapping("/getuser/{userId}")
+	public ResponseEntity<ApiResponse> getUserById(@RequestBody User user, @PathVariable long userId)
 	{
 		try {
 		User userbyid=userService.findByUser(user, userId);
@@ -91,8 +91,8 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/getUsers")
-	private ResponseEntity<ApiResponse> getUser()
+	@GetMapping("/getUser")
+	public ResponseEntity<ApiResponse> getUser()
 	{
 		try {
 			 List<User> user=userService.findAll();

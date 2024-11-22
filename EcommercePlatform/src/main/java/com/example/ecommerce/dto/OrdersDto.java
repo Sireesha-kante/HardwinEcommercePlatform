@@ -2,7 +2,19 @@ package com.example.ecommerce.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.example.ecommerce.entities.OrderItems;
 import com.example.ecommerce.entities.Product;
+import com.example.ecommerce.entities.User;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -10,32 +22,26 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
-@Data
-@Getter
-@Setter
-@ToString
 public class OrdersDto {
 
-private long orderId;
-	
+	private long orderId;
 	private long userId;
 	private LocalDateTime orderDate;
 	private Double totalAmount;
-	private List<Product> products;
-	private UserDto userDto;
-	public OrdersDto(long orderId, long userId, LocalDateTime orderDate, Double totalAmount, List<Product> products,
-			UserDto userDto) {
+	private User user;
+	private List<OrderItems> orderItems;
+	public OrdersDto() {
+		super();
+	}
+	public OrdersDto(long orderId, long userId, LocalDateTime orderDate, Double totalAmount, User user,
+			List<OrderItems> orderItems) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
 		this.orderDate = orderDate;
 		this.totalAmount = totalAmount;
-		this.products = products;
-		this.userDto = userDto;
-	}
-	public OrdersDto() {
-		super();
+		this.user = user;
+		this.orderItems = orderItems;
 	}
 	public long getOrderId() {
 		return orderId;
@@ -61,23 +67,23 @@ private long orderId;
 	public void setTotalAmount(Double totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-	public List<Product> getProducts() {
-		return products;
+	public User getUser() {
+		return user;
 	}
-	public void setProducts(List<Product> products) {
-		this.products = products;
+	public void setUser(User user) {
+		this.user = user;
 	}
-	public UserDto getUserDto() {
-		return userDto;
+	public List<OrderItems> getOrderItems() {
+		return orderItems;
 	}
-	public void setUserDto(UserDto userDto) {
-		this.userDto = userDto;
+	public void setOrderItems(List<OrderItems> orderItems) {
+		this.orderItems = orderItems;
 	}
 	@Override
 	public String toString() {
 		return "OrdersDto [orderId=" + orderId + ", userId=" + userId + ", orderDate=" + orderDate + ", totalAmount="
-				+ totalAmount + ", products=" + products + ", userDto=" + userDto + "]";
+				+ totalAmount + ", user=" + user + ", orderItems=" + orderItems + "]";
 	}
-	
+
 	
 }

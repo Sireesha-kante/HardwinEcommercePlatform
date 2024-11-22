@@ -23,13 +23,12 @@ public class UpdateProduct {
 		// TODO Auto-generated constructor stub
 	}
 
-	public UpdateProduct(String productName, String description, Double price, int stock, Category category) {
+	public UpdateProduct(String productName, String description, Double price, int stock) {
 		super();
 		this.productName = productName;
 		Description = description;
 		this.price = price;
 		this.stock = stock;
-		this.category = category;
 	}
 
 	public String getProductName() {

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ecommerce.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
-@RequestMapping("${api.prefix}/orders")
+@RequestMapping("/api/ecom")
 @RestController
 public class OrdersController {
 	

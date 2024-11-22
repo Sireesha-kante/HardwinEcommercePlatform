@@ -9,13 +9,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Data
 
 public class AddProduct {
 	
 	private long productId;
 	private String productName;
-	private String Description;
+	private String description;
 	private Double price;
 	private int stock;
 	private Category category;
@@ -29,7 +28,7 @@ public class AddProduct {
 		super();
 		this.productId = productId;
 		this.productName = productName;
-		Description = description;
+		this.description = description;
 		this.price = price;
 		this.stock = stock;
 		this.category = category;
@@ -52,11 +51,11 @@ public class AddProduct {
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	public Double getPrice() {
@@ -85,7 +84,7 @@ public class AddProduct {
 
 	@Override
 	public String toString() {
-		return "AddProduct [productId=" + productId + ", productName=" + productName + ", Description=" + Description
+		return "AddProduct [productId=" + productId + ", productName=" + productName + ", Description=" + description
 				+ ", price=" + price + ", stock=" + stock + ", category=" + category + "]";
 	}
 

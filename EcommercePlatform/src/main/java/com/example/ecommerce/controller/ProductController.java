@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/products")
+@RequestMapping("/api/ecom")
 @RestController
 public class ProductController {
 	@Autowired
@@ -42,7 +42,7 @@ public class ProductController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("No Products in DB", null));
 		}
 	}
-	@PutMapping("/{productId}/getProduct")
+	@GetMapping("/getProduct/{productId}")
 	 public ResponseEntity<ApiResponse> getProductById(@RequestBody Product product,@PathVariable long productId)
 	 {
 		 try {
@@ -53,21 +53,22 @@ public class ProductController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("no Product found",null));
 		}
 	 }
-	@PostMapping("/addProduct")
-	public ResponseEntity<ApiResponse>  insertProduct(@RequestBody AddProduct addProduct)
+	@PostMapping("/product/{categoryId}")
+	public ResponseEntity<ApiResponse>  insertProduct(@RequestBody AddProduct addProduct, @PathVariable long categoryId)
 	{
 	 try {
-		 Product product=productService.createProduct(addProduct);
+		 Product product=productService.createProduct(addProduct,categoryId);
 		 ProductDto productDto=productService.convertProducttoDTO(product);
 		 return ResponseEntity.ok(new ApiResponse("Sucess",productDto)); 
 	 }
 	 catch(AlreadyExistException ae) {
+		 System.out.println("Error message: " + ae.getMessage());
 		 return ResponseEntity.status(HttpStatus.CONFLICT).body(new ApiResponse(ae.getMessage(),null) );
 	 }
 	 
 	}
 	
-	@PutMapping("/{productId}updateProduct")
+	@PutMapping("/updateProduct/{productId}")
 	public ResponseEntity<ApiResponse> updateProduct(@RequestBody UpdateProduct updateProduct,@PathVariable long productId)
 	{
 		 try {
@@ -79,7 +80,7 @@ public class ProductController {
 			 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(rnf.getMessage(),null) );
 		 }
 	}
-	@DeleteMapping("/{productId}deleteProduct")
+	@DeleteMapping("/deleteProduct/{productId}")
 	public ResponseEntity<ApiResponse> deletProduct(@PathVariable long productId)
 	{
 		try {
@@ -93,7 +94,7 @@ public class ProductController {
 	}
 	
 	
-	@GetMapping("/{category}productbycategory")
+	@GetMapping("/productbycategory/{category}")
 	public ResponseEntity<ApiResponse> getProductsByCategories(@PathVariable String category)
 	{
 	   try {
@@ -106,7 +107,7 @@ public class ProductController {
 		}
 	}
 	
-	@GetMapping("/productby{category}and{price}")
+	@GetMapping("/product/{category}/{price}")
 	public ResponseEntity<ApiResponse> getProductsByCategoriesandPrice(@PathVariable String category, @PathVariable int price)
 	{
 		try {
@@ -117,7 +118,7 @@ public class ProductController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("no data found", null));
 		}
 	}
-	@GetMapping("/listofproductsin{category}")
+	@GetMapping("/countproducts/{category}")
 	public ResponseEntity<ApiResponse> countProductsbyCategories(@PathVariable String category)
 	{
 		try {

@@ -3,6 +3,10 @@ package com.example.ecommerce.entities;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
+
+import com.example.ecommerce.dto.CartItemDto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,13 +16,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-@Data
 
 @Entity
 @Table(name = "Orders")
@@ -34,29 +31,40 @@ public class Orders {
 	@Column(name="totalAmount")
 	private Double totalAmount;
 	
-	@OneToMany
-	@JoinColumn(name="productId")
-	private List<Product> products;
-	
 	@ManyToOne
 	@JoinColumn(name="userName")
 	private User user;
 
+	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
+	private List<OrderItems> orderItems;
+	
 	public Orders() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Orders(long orderId, long userId, LocalDateTime orderDate, Double totalAmount, List<Product> products,
-			User user) {
+	public Orders(long orderId, long userId, LocalDateTime orderDate, Double totalAmount, User user,
+			List<OrderItems> orderItems) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
 		this.orderDate = orderDate;
 		this.totalAmount = totalAmount;
-		this.products = products;
 		this.user = user;
+		this.orderItems = orderItems;
 	}
+
+	public Orders(long userId, List<CartItemDto> cartItem, double amount) {
+		this.userId=userId;
+		this.orderItems=cartItem.stream().map(item ->{
+		OrderItems orderitems=new OrderItems();
+		orderitems.setProductId(item.getProductId());
+		orderitems.setProductName(item.getProductName());
+		orderitems.setQuantity(item.getQuantity());
+		orderitems.setPrice(item.getPrice());
+		orderitems.setOrders(this);
+		return orderitems;}).toList();
+		}
 
 	public long getOrderId() {
 		return orderId;
@@ -90,14 +98,6 @@ public class Orders {
 		this.totalAmount = totalAmount;
 	}
 
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(List<Product> products) {
-		this.products = products;
-	}
-
 	public User getUser() {
 		return user;
 	}
@@ -106,12 +106,22 @@ public class Orders {
 		this.user = user;
 	}
 
+	public List<OrderItems> getOrderItems() {
+		return orderItems;
+	}
+
+	public void setOrderItems(List<OrderItems> orderItems) {
+		this.orderItems = orderItems;
+	}
+
 	@Override
 	public String toString() {
 		return "Orders [orderId=" + orderId + ", userId=" + userId + ", orderDate=" + orderDate + ", totalAmount="
-				+ totalAmount + ", products=" + products + ", user=" + user + "]";
+				+ totalAmount + ", user=" + user + ", orderItems=" + orderItems + "]";
 	}
 
+	
+	
 
 	
 }

@@ -8,7 +8,7 @@ import com.example.ecommerce.entities.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category,Long> {
 
-	public boolean existsBycategoryId(long categoryId);
+	
 	
 
 }

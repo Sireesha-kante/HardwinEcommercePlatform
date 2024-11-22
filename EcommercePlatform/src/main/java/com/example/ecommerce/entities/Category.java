@@ -2,6 +2,8 @@ package com.example.ecommerce.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,6 +22,7 @@ public class Category {
 	@Column(name="categoryName")
 	private String categoryName;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="category",cascade = CascadeType.ALL)
 	private List<Product> product;
 
@@ -27,11 +30,10 @@ public class Category {
 		super();
 	}
 
-	public Category(long categoryId, String categoryName, List<Product> product) {
+	public Category(long categoryId, String categoryName) {
 		super();
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
-		this.product = product;
 	}
 
 	public long getCategoryId() {
@@ -48,6 +50,7 @@ public class Category {
 
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+		System.out.println(categoryName);
 	}
 
 	public List<Product> getProduct() {

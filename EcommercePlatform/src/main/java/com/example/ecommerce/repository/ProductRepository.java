@@ -11,8 +11,8 @@ import com.example.ecommerce.entities.Product;
 public interface ProductRepository extends JpaRepository<Product,Long>{
 
 public 	boolean existsByproductName(String productName);
-public List<Product> existsByCategory_CategoryName(String categoryName);
-public List<Product> findByCategory_CategoryNameAndPriceLessThan(String categoryName, double price);
+public List<Product> findByCategory_CategoryName(String categoryName);
+public List<Product> findByCategory_CategoryNameAndPrice(String categoryName, double price);
 public	Long countByCategory_CategoryName(String categoryName);
 }
 

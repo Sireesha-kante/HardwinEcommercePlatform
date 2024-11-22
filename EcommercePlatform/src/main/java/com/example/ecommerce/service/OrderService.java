@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.stereotype.Service;
 
+import com.example.ecommerce.dto.CartItemDto;
 import com.example.ecommerce.dto.OrdersDto;
 import com.example.ecommerce.entities.Orders;
 import com.example.ecommerce.exception.AlreadyExistException;
@@ -29,7 +30,7 @@ public class OrderService implements IOrderService {
 	@Override
 	public Orders findByOrder(Orders orders, long orderId) {
 		return orderRepo.findById(orderId)
-				   .orElseThrow(() -> new AlreadyExistException("Order with Id " +orders.getOrderId()+ "notfound"));
+				   .orElseThrow(() -> new ResourceNotFound("Order with Id " +orders.getOrderId()+ "notfound"));
 
 	}
 
@@ -43,7 +44,6 @@ public class OrderService implements IOrderService {
 		OrdersDto orderDto=new OrdersDto();
 		orderDto.setOrderId(orders.getOrderId());
 		orderDto.setOrderDate(orders.getOrderDate());
-		orderDto.setProducts(orders.getProducts());
 		orderDto.setTotalAmount(orders.getTotalAmount());
 		orderDto.setUserId(orders.getUserId());
 		return orderDto;
@@ -51,14 +51,22 @@ public class OrderService implements IOrderService {
 	}
 
 	@Override
-	public Orders placeOrder(long userId) {
-		return null;
+	public Orders placeOrder(long userId, List<CartItemDto> cartItems, double amount) {
+	
+		Orders order=new Orders(userId, cartItems, amount);
+		return orderRepo.save(order);
 	}
 
 	@Override
 	public List<OrdersDto> getUserOrders(long userId) {
 		List<Orders>orders=orderRepo.findByUserId(userId);
 		  return orders.stream().map(this::convertOrdersToDTO).toList();
+	}
+
+	@Override
+	public OrdersDto getOrderDetails(long orderId) {
+		Orders orders=orderRepo.findById(orderId).orElseThrow(() -> new ResourceNotFound("Order notfound"));
+		return convertOrdersToDTO(orders);
 	}
 	
 	
