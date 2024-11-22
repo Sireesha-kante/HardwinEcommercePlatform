@@ -1,11 +1,14 @@
 package com.example.ecommerce.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.hibernate.cache.spi.support.AbstractReadWriteAccess.Item;
 
 import com.example.ecommerce.dto.CartItemDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,10 +30,10 @@ public class Orders {
 	@Column(name="userId")
 	private long userId;
 	@Column(name="orderDate")
-	private LocalDateTime orderDate;
+	private LocalDate orderDate;
 	@Column(name="totalAmount")
 	private Double totalAmount;
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="userName")
 	private User user;
@@ -43,7 +46,7 @@ public class Orders {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Orders(long orderId, long userId, LocalDateTime orderDate, Double totalAmount, User user,
+	public Orders(long orderId, long userId, LocalDate orderDate, Double totalAmount, User user,
 			List<OrderItems> orderItems) {
 		super();
 		this.orderId = orderId;
@@ -64,6 +67,9 @@ public class Orders {
 		orderitems.setPrice(item.getPrice());
 		orderitems.setOrders(this);
 		return orderitems;}).toList();
+		this.totalAmount=amount;
+		this.orderDate = LocalDate.now();
+		
 		}
 
 	public long getOrderId() {
@@ -82,11 +88,11 @@ public class Orders {
 		this.userId = userId;
 	}
 
-	public LocalDateTime getOrderDate() {
+	public LocalDate getOrderDate() {
 		return orderDate;
 	}
 
-	public void setOrderDate(LocalDateTime orderDate) {
+	public void setOrderDate(LocalDate orderDate) {
 		this.orderDate = orderDate;
 	}
 

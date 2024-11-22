@@ -26,7 +26,7 @@ public class Product {
 	@Column(name="productDescription")
 	private String description;
 	@Column(name="productPrice")
-	private Double price;
+	private double price;
 	@Column(name="productStock")
 	private int stock;
 	
@@ -39,7 +39,7 @@ public class Product {
 		super();
 	}
 
-	public Product(long productId, String productName, String description, Double price, int stock, Category category) {
+	public Product(long productId, String productName, String description, double price, int stock, Category category) {
 		super();
 		this.productId = productId;
 		this.productName = productName;
@@ -73,11 +73,11 @@ public class Product {
 		this.description = description;
 	}
 
-	public Double getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -99,7 +99,9 @@ public class Product {
 
 	@Override
 	public String toString() {
-		return "Product [productId=" + productId + ", productName=" + productName + ", Description=" + description
+		return "Product [productId=" + productId + ", productName=" + productName + ", description=" + description
 				+ ", price=" + price + ", stock=" + stock + ", category=" + category + "]";
 	}
+
+	
 }

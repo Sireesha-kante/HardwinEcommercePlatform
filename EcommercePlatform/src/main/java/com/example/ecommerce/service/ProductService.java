@@ -112,5 +112,10 @@ public class ProductService  implements IProductService{
 		
 		return product.stream().map(this::convertProducttoDTO).toList();
 	}
+	@Override
+	public double getPriceByProductId(long productId) {
+		Product product=productRepo.findProductPriceByProductId(productId);
+		return  product.getPrice();
+	}
 
 }

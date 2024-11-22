@@ -20,5 +20,6 @@ public interface IProductService {
 	public Long countProductsbyCategory(String category);
 	public ProductDto convertProducttoDTO(Product product);
 	public List<ProductDto> getConvertedProducts(List<Product> product);
-	List<Product> findAllProducts();
+	public double getPriceByProductId(long productId);
+	public List<Product> findAllProducts();
 }

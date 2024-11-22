@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.ecommerce.dto.CartItemDto;
 import com.example.ecommerce.dto.OrdersDto;
+import com.example.ecommerce.dto.ProductDto;
 import com.example.ecommerce.entities.Orders;
+import com.example.ecommerce.entities.Product;
 import com.example.ecommerce.exception.AlreadyExistException;
 import com.example.ecommerce.exception.ResourceNotFound;
 import com.example.ecommerce.repository.OrdersRepository;
@@ -21,18 +23,16 @@ public class OrderService implements IOrderService {
 
 	@Autowired
 	private  OrdersRepository orderRepo;
+	
+	@Autowired
+	private CartService cartService;
+	
 	@Override
 	public void deleteOrder(long orderId) {
 		orderRepo.findById(orderId).ifPresentOrElse(orderRepo::delete,()->new ResourceNotFound("Order not found") );
 		
 	}
 
-	@Override
-	public Orders findByOrder(Orders orders, long orderId) {
-		return orderRepo.findById(orderId)
-				   .orElseThrow(() -> new ResourceNotFound("Order with Id " +orders.getOrderId()+ "notfound"));
-
-	}
 
 	@Override
 	public List<Orders> findAllOrders() {
@@ -49,26 +49,29 @@ public class OrderService implements IOrderService {
 		return orderDto;
 		
 	}
+	@Override
+	public List<OrdersDto> getConvertedOrders(List<Orders> orders) {
+		
+		return orders.stream().map(this::convertOrdersToDTO).toList();
+	}
 
 	@Override
-	public Orders placeOrder(long userId, List<CartItemDto> cartItems, double amount) {
-	
-		Orders order=new Orders(userId, cartItems, amount);
+	public Orders placeOrder(long userId) {
+		Orders order=cartService.placeOrder(userId);
 		return orderRepo.save(order);
 	}
 
 	@Override
-	public List<OrdersDto> getUserOrders(long userId) {
+	public List<Orders> getUserOrders(long userId) {
 		List<Orders>orders=orderRepo.findByUserId(userId);
-		  return orders.stream().map(this::convertOrdersToDTO).toList();
+		  return orders;
 	}
 
 	@Override
-	public OrdersDto getOrderDetails(long orderId) {
-		Orders orders=orderRepo.findById(orderId).orElseThrow(() -> new ResourceNotFound("Order notfound"));
-		return convertOrdersToDTO(orders);
+	public Orders getOrderDetails(long orderId) {
+		Orders orders=orderRepo.findById(orderId).orElseThrow(() -> new ResourceNotFound("Order not found"));
+		return orders;
 	}
-	
 	
 
 }

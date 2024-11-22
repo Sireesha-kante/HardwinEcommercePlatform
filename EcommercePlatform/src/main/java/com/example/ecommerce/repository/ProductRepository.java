@@ -14,6 +14,7 @@ public 	boolean existsByproductName(String productName);
 public List<Product> findByCategory_CategoryName(String categoryName);
 public List<Product> findByCategory_CategoryNameAndPrice(String categoryName, double price);
 public	Long countByCategory_CategoryName(String categoryName);
+public Product findProductPriceByProductId(long productId);
 }
 
 

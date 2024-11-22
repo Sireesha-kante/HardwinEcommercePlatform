@@ -1,5 +1,6 @@
 package com.example.ecommerce.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -26,14 +27,14 @@ public class OrdersDto {
 
 	private long orderId;
 	private long userId;
-	private LocalDateTime orderDate;
+	private LocalDate orderDate;
 	private Double totalAmount;
 	private User user;
 	private List<OrderItems> orderItems;
 	public OrdersDto() {
 		super();
 	}
-	public OrdersDto(long orderId, long userId, LocalDateTime orderDate, Double totalAmount, User user,
+	public OrdersDto(long orderId, long userId, LocalDate orderDate, Double totalAmount, User user,
 			List<OrderItems> orderItems) {
 		super();
 		this.orderId = orderId;
@@ -55,11 +56,11 @@ public class OrdersDto {
 	public void setUserId(long userId) {
 		this.userId = userId;
 	}
-	public LocalDateTime getOrderDate() {
+	public LocalDate getOrderDate() {
 		return orderDate;
 	}
-	public void setOrderDate(LocalDateTime orderDate) {
-		this.orderDate = orderDate;
+	public void setOrderDate(LocalDate localDate) {
+		this.orderDate = localDate;
 	}
 	public Double getTotalAmount() {
 		return totalAmount;

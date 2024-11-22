@@ -21,7 +21,7 @@ import com.example.ecommerce.exception.ResourceNotFound;
 import com.example.ecommerce.response.ApiResponse;
 import com.example.ecommerce.service.CartService;
 
-@RequestMapping("api/ecom")
+@RequestMapping("api/ecom/")
 @RestController
 public class CartController {
 	@Autowired
@@ -78,18 +78,5 @@ public class CartController {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ApiResponse("no items in cart to clear",null));
 		}
 	}
-	@PostMapping("placeorder/{userId}")
-	public ResponseEntity<ApiResponse> placeOrder(@PathVariable long userId)
-	{
-		try {
-			Orders orders=cartService.placeOrder(userId);
-			return ResponseEntity.ok(new ApiResponse("Order Placed",orders));
-		}
-		catch(ResourceNotFound rnf)
-		{
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("no items to place order",null));
-		}
-	}
-	
 
 }

@@ -27,19 +27,19 @@ public class User {
 	
 	@OneToMany(mappedBy="user",cascade = CascadeType.ALL)
 	private List<Orders> orders;
-	
-	@OneToOne
-	@JoinColumn(name="orderId")
-	private Orders order;
 
-	public User(long userId, String userName, String userEmail, String password, List<Orders> orders, Orders order) {
+	
+	public User(long userId, String userName, String userEmail, String password, List<Orders> orders) {
 		super();
 		this.userId = userId;
 		this.userName = userName;
 		this.userEmail = userEmail;
 		this.password = password;
 		this.orders = orders;
-		this.order = order;
+	}
+
+	public User() {
+		super();
 	}
 
 	public long getUserId() {
@@ -82,23 +82,13 @@ public class User {
 		this.orders = orders;
 	}
 
-	public Orders getOrder() {
-		return order;
-	}
-
-	public void setOrder(Orders order) {
-		this.order = order;
-	}
-
-	public User() {
-		super();
-	}
-
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", userName=" + userName + ", userEmail=" + userEmail + ", password="
-				+ password + ", orders=" + orders + ", order=" + order + "]";
+				+ password + ", orders=" + orders + "]";
 	}
+	
+	
 
 }
 

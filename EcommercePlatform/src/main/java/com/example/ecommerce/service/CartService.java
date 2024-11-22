@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.ecommerce.dto.CartItemDto;
@@ -13,7 +14,9 @@ import com.example.ecommerce.exception.ResourceNotFound;
 @Service
 public class CartService implements ICartService{
 	
-	private Map<Long,List<CartItemDto>> userCart=new HashMap();
+	public Map<Long,List<CartItemDto>> userCart=new HashMap();
+	@Autowired
+	private ProductService productService;
 
 	@Override
 	public List<CartItemDto> getCart(long userId) {
@@ -22,26 +25,26 @@ public class CartService implements ICartService{
 
 	@Override
 	public  void addItem(long userId, CartItemDto cartItemDto) {
-		
-		List<CartItemDto>cartItem=userCart.getOrDefault(userId,new ArrayList() );
-		
-		 cartItem.stream().filter(cart->cart.getProductId()==(cartItemDto.getProductId()))
-					    .findFirst()
-					     .ifPresentOrElse(existingItem->{
-					    	 existingItem.setQuantity(existingItem.getQuantity()+cartItemDto.getQuantity());
-					    	 existingItem.setTotalPrice(existingItem.getQuantity()*existingItem.getPrice());
-					     }, ()->{
-					    	 cartItemDto.setTotalPrice(cartItemDto.getQuantity()*cartItemDto.getPrice());
-					      cartItem.add(cartItemDto);
-					     });
-	       	 userCart.put(userId,cartItem );
+		List<CartItemDto> cartItems=userCart.computeIfAbsent(userId, k->new ArrayList<>());
+		double price=productService.getPriceByProductId(cartItemDto.getProductId());
+		cartItemDto.setPrice(price);
+				cartItems.stream()
+						 .filter(item -> item.getProductId()==cartItemDto.getProductId())
+						 .findFirst()
+						 .ifPresentOrElse(existingItem->{
+							 existingItem.setQuantity(existingItem.getQuantity()+cartItemDto.getQuantity());
+							 existingItem.setTotalPrice(existingItem.getQuantity() * existingItem.getPrice());
+						 }, ()-> {
+							 cartItemDto.setTotalPrice(cartItemDto.getQuantity()*cartItemDto.getPrice());
+							 cartItems.add(cartItemDto);
+						 });
 	}
 
 	@Override
 	public void removeItem(long userId, long productId) {
 		
 		List<CartItemDto>cartItem=userCart.get(userId);
-		if(cartItem==null ||!cartItem.removeIf(cart->cart.getProductId()==(productId)))
+		if(cartItem==null ||!cartItem.removeIf(cart->cart.getProductId()==productId))
 		{
 			throw new ResourceNotFound("No product with this Id"+productId);
 		}

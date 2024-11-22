@@ -1,5 +1,7 @@
 package com.example.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +28,7 @@ public class OrderItems {
 	
 	@Column(name="price")
 	private double price;
-	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="orderId", nullable=false)
 	private Orders orders;
